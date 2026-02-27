@@ -11,17 +11,26 @@ public with sharing class Restaurante {
         this.cardapio = new List<Produto>();
     }
     
-    public void adicionarProduto(Produto pProduto){
-        if(pProduto.nome == null || pProduto.nome.trim() == '') {
-            throw new IllegalArgumentException('O nome do produto não pode ser vazio.');
+    public void adicionarProduto(Produto pProduto) {
+        if (pProduto == null) {
+            System.debug('Erro: Produto inválido.');
+            return;
         }
-        for(Produto produtoExistente : cardapio) {
-            if(produtoExistente.nome.equalsIgnoreCase(pProduto.nome)) {
-                throw new IllegalArgumentException('O produto já existe no cardápio.');
+
+        if (pProduto.nome == null || pProduto.nome.trim() == '') {
+            System.debug('Erro: O nome do produto não pode ser vazio.');
+            return;
+        }
+
+        for (Produto produtoExistente : cardapio) {
+            if (produtoExistente.nome.equalsIgnoreCase(pProduto.nome)) {
+                System.debug('Erro: O produto "' + pProduto.nome + '" já existe no cardápio.');
+                return;
             }
         }
+
         this.cardapio.add(pProduto);
-        System.debug('Sucesso: Produto adicionado com sucesso!');
+        System.debug('Sucesso: Produto "' + pProduto.nome + '" adicionado ao cardápio.');
     }
     
     public override String toString() {
@@ -33,30 +42,39 @@ public with sharing class Restaurante {
     
     public void exibirCardapio() {
         System.debug('Cardápio do Restaurante: ' + nome);
-        if(cardapio.isEmpty()) {
+
+        if (cardapio.isEmpty()) {
             System.debug('O cardápio está vazio.');
             return;
-        }else{
-            for(Produto produto : cardapio) {
-                System.debug(produto.toString());
-            }
+        }
+
+        Integer contador = 1;
+        for (Produto produto : cardapio) {
+            System.debug(contador + ' - ' + produto.toString());
+            contador++;
         }
     }
 
-    public void buscarProdutos(String pTermoBusca){
+    public List<Produto> buscarProdutos(String pTermoBusca) {
         List<Produto> resultados = new List<Produto>();
-        for(Produto produto : cardapio) {
-            if(produto.nome.toLowerCase().contains(pTermoBusca.toLowerCase())) {
+
+        for (Produto produto : cardapio) {
+            if (produto.nome.toLowerCase().contains(pTermoBusca.toLowerCase())) {
                 resultados.add(produto);
             }
         }
-        if(resultados.isEmpty()) {
-            System.debug('Nenhum produto encontrado para o termo: ' + pTermoBusca);
+
+        if (resultados.isEmpty()) {
+            System.debug('Nenhum produto encontrado para "' + pTermoBusca + '".');
         } else {
-            System.debug('Produtos encontrados:');
-            for(Produto produto : resultados) {
-                System.debug(produto.toString());
+            System.debug('Produtos encontrados com a palavra "' + pTermoBusca + '":');
+            Integer contador = 1;
+            for (Produto produto : resultados) {
+                System.debug(contador + ' - ' + produto.nome);
+                contador++;
             }
         }
+
+        return resultados;
     }
 }
