@@ -12,7 +12,16 @@ public with sharing class Restaurante {
     }
     
     public void adicionarProduto(Produto pProduto){
+        if(pProduto.nome == null || pProduto.nome.trim() == '') {
+            throw new IllegalArgumentException('O nome do produto não pode ser vazio.');
+        }
+        for(Produto produtoExistente : cardapio) {
+            if(produtoExistente.nome.equalsIgnoreCase(pProduto.nome)) {
+                throw new IllegalArgumentException('O produto já existe no cardápio.');
+            }
+        }
         this.cardapio.add(pProduto);
+        System.debug('Sucesso: Produto adicionado com sucesso!');
     }
     
     public override String toString() {
