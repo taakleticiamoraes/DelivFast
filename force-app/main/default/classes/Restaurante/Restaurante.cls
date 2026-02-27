@@ -42,4 +42,21 @@ public with sharing class Restaurante {
             }
         }
     }
+
+    public void buscarProdutos(String pTermoBusca){
+        List<Produto> resultados = new List<Produto>();
+        for(Produto produto : cardapio) {
+            if(produto.nome.toLowerCase().contains(pTermoBusca.toLowerCase())) {
+                resultados.add(produto);
+            }
+        }
+        if(resultados.isEmpty()) {
+            System.debug('Nenhum produto encontrado para o termo: ' + pTermoBusca);
+        } else {
+            System.debug('Produtos encontrados:');
+            for(Produto produto : resultados) {
+                System.debug(produto.toString());
+            }
+        }
+    }
 }
