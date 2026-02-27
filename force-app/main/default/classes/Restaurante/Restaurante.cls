@@ -30,4 +30,16 @@ public with sharing class Restaurante {
             ', Endereço: ' + endereco +
             ', Total de produtos: ' + cardapio.size();
     }
+    
+    public void exibirCardapio() {
+        System.debug('Cardápio do Restaurante: ' + nome);
+        if(cardapio.isEmpty()) {
+            System.debug('O cardápio está vazio.');
+            return;
+        }else{
+            for(Produto produto : cardapio) {
+                System.debug(produto.toString());
+            }
+        }
+    }
 }
