@@ -1,10 +1,11 @@
-public with sharing class Restaurante {
+public class Restaurante extends EntidadeBase{
     public String nome;
     public String endereco;
     public CategoriaRestaurante categoria;
     public List<Produto> cardapio;
     
     public Restaurante(String pNome, String pEndereco, CategoriaRestaurante pCategoria) {
+        super();
         this.nome = pNome;
         this.endereco = pEndereco;
         this.categoria = pCategoria;

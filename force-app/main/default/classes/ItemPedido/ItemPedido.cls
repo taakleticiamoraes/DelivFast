@@ -1,10 +1,11 @@
-public with sharing class ItemPedido {
+public class ItemPedido extends EntidadeBase{
 
     public Produto produto;
     public Integer quantidade;
     public Decimal subtotal;
 
     public ItemPedido(Produto pProduto, Integer pQuantidade) {
+        super();
         this.produto = pProduto;
         this.quantidade = pQuantidade;
         this.subtotal = calcularSubtotal();
