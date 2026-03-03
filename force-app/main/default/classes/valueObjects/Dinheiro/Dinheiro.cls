@@ -4,21 +4,32 @@ public class Dinheiro {
     
     public Dinheiro(Decimal pValor) {
         if (pValor == null || pValor < 0) {
-            throw new IllegalArgumentException('Valor monetário inválido.');
+            System.debug('ERRO: Valor monetário inválido.');
+            pValor = 0;
         }
         
         this.valor = pValor.setScale(2);
     }
     
     public Dinheiro somar(Dinheiro pOutro){
+        if (pOutro == null) {
+            System.debug('ERRO: Valor nulo para soma.');
+            return this;
+        }
         return new Dinheiro(this.valor + pOutro.valor);
     }
     
     public Dinheiro subtrair(Dinheiro pOutro){
+        if (pOutro == null) {
+            System.debug('ERRO: Valor nulo para subtração.');
+            return this;
+        }
+
         Decimal resultado = this.valor - pOutro.valor;
         
         if (resultado < 0) {
-            throw new IllegalArgumentException('Resultado não pode ser negativo.');
+            System.debug('ERRO: Resultado não pode ser negativo.');
+            return this;
         }
         
         return new Dinheiro(resultado);
@@ -26,7 +37,8 @@ public class Dinheiro {
     
     public Dinheiro multiplicar(Integer pMultiplicador){
         if (pMultiplicador == null || pMultiplicador < 0) {
-            throw new IllegalArgumentException('Multiplicador inválido.');
+            System.debug('ERRO: Multiplicador inválido.');
+            return this;
         }
         
         return new Dinheiro(this.valor * pMultiplicador);
