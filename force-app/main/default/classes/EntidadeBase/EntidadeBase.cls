@@ -10,7 +10,7 @@ public abstract class EntidadeBase {
         return String.valueOf(Crypto.getRandomLong());
     }
 
-    public override Boolean equals(Object obj){
+    public Boolean equals(Object obj){
         if (obj == null) return false;
 
         if (!(obj instanceof EntidadeBase)) return false;
