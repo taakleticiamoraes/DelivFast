@@ -3,7 +3,7 @@ public class Pedido extends EntidadeBase{
     public Restaurante restaurante;
     public List<ItemPedido> itens;
     public StatusPedido status;
-    public Decimal total;
+    public Dinheiro total;
     
     public Pedido(Cliente pCliente, Restaurante pRestaurante) {
         super();
@@ -11,7 +11,7 @@ public class Pedido extends EntidadeBase{
         this.restaurante = pRestaurante;
         this.status = StatusPedido.CARRINHO;
         this.itens = new List<ItemPedido>();
-        this.total = 0.0;
+        this.total = new Dinheiro(0.0);
     }
     
     public void adicionarItemPedido(Produto pProduto, Integer pQuantidade) {
@@ -61,16 +61,16 @@ public class Pedido extends EntidadeBase{
         calcularTotal();
     }
     
-    public Decimal calcularTotal() {
+    public Dinheiro calcularTotal() {
         Decimal soma = 0;
         
         for (ItemPedido item : itens) {
             soma += item.calcularSubtotal();
         }
         
-        total = soma;
+        total = new Dinheiro(soma);
         
-        System.debug('Total atualizado do pedido: R$ ' + total.setScale(2));
+        System.debug('Total atualizado do pedido: R$ ' + total);
         return total;
     }
     
@@ -102,12 +102,12 @@ public class Pedido extends EntidadeBase{
                 i + ' - ' +
                 item.produto.nome +
                 ' - Quantidade: ' + item.quantidade +
-                ' - Subtotal: R$ ' + item.calcularSubtotal().setScale(2)
+                ' - Subtotal: R$ ' + item.calcularSubtotal()
                 );
             i++;
         }
         
-        System.debug('Total: R$ ' + total.setScale(2));
+        System.debug('Total: R$ ' + total);
         System.debug('Status do pedido: ' + status);
     }
     
@@ -177,7 +177,7 @@ public class Pedido extends EntidadeBase{
         }
         
         for (Pedido pedido : pedidos) {
-            String cpfCliente = pedido.cliente.cpf;
+            String cpfCliente = pedido.cliente.cpf.valor;
             
             if (pedidosPorCliente.containsKey(cpfCliente)) {
                 pedidosPorCliente.get(cpfCliente).add(pedido);
