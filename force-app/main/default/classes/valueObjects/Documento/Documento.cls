@@ -1,15 +1,17 @@
 public class Documento {
+
     public final String valor;
 
     public Documento(String pValor) {
         if (String.isBlank(pValor)) {
-            System.debug('ERRO: CPF inválido.');
+            System.debug('ERRO: Documento inválido.');
             pValor = '00000000000';
         }
+
         this.valor = pValor;
     }
 
-    public Boolean equals(Object obj) {
+    public override Boolean equals(Object obj) {
         if (obj == null || !(obj instanceof Documento)) {
             return false;
         }

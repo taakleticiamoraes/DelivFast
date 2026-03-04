@@ -1,9 +1,21 @@
-public class ItemPedido extends EntidadeBase{
+public class ItemPedido extends EntidadeBase {
     
-    public Produto produto;
-    public Integer quantidade;
-    public Decimal subtotal;
+    private Produto produto;
+    private Integer quantidade;
+    private Decimal subtotal;
     
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public Decimal getSubtotal() {
+        return subtotal;
+    }
+
     public ItemPedido(Produto pProduto, Integer pQuantidade) {
         super();
         this.produto = pProduto;
@@ -14,17 +26,17 @@ public class ItemPedido extends EntidadeBase{
     public Decimal calcularSubtotal() {
         if (produto == null) {
             System.debug('Erro: Produto inválido para calcular subtotal.');
-            this.subtotal = 0.00;
-            return 0.00;
+            subtotal = 0.00;
+            return subtotal;
         }
         
         if (quantidade == null || quantidade <= 0) {
-            System.debug('Erro: Quantidade inválida para calcular subtotal. Deve ser maior que zero.');
-            this.subtotal = 0.00;
-            return 0.00;
+            System.debug('Erro: Quantidade inválida.');
+            subtotal = 0.00;
+            return subtotal;
         }
         
-        this.subtotal = produto.preco.valor * quantidade;
-        return this.subtotal;
+        subtotal = produto.getPreco().valor * quantidade;
+        return subtotal;
     }
 }

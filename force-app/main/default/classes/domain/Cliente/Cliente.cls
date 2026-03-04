@@ -1,7 +1,15 @@
 public class Cliente extends Pessoa {
 
-    public Endereco endereco;
-    public String telefone;
+    private Endereco endereco;
+    private String telefone;
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
 
     public Cliente(
         String pNome,

@@ -11,13 +11,17 @@ public class Endereco {
     String pComplemento,
     String pCidade
     ) {
+        if (String.isBlank(pLogradouro) || String.isBlank(pNumero) || String.isBlank(pCidade)) {
+            System.debug('ERRO: Endereço inválido.');
+        }
+        
         this.logradouro = pLogradouro;
         this.numero = pNumero;
         this.complemento = pComplemento;
         this.cidade = pCidade;
     }
     
-    public Boolean equals(Object obj) {
+    public override Boolean equals(Object obj) {
         if (obj == null || !(obj instanceof Endereco)) {
             return false;
         }

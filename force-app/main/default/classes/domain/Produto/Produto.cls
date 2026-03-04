@@ -1,6 +1,15 @@
 public class Produto extends EntidadeBase {
-    public String nome;
-    public Dinheiro preco;
+
+    private String nome;
+    private Dinheiro preco;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public Dinheiro getPreco() {
+        return preco;
+    }
     
     public Produto(String pNome, Dinheiro pPreco) {
         super();
@@ -12,5 +21,4 @@ public class Produto extends EntidadeBase {
         return 'Produto: ' + nome +
             ' - R$' + preco.valor.setScale(2);
     }
-    
 }

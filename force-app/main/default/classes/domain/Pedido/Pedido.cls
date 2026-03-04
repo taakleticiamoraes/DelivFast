@@ -1,10 +1,17 @@
 public class Pedido extends EntidadeBase {
-    public Cliente cliente;
-    public Restaurante restaurante;
-    public List<ItemPedido> itens;
-    public StatusPedido status;
-    public Dinheiro total;
-    
+
+    private Cliente cliente;
+    private Restaurante restaurante;
+    private List<ItemPedido> itens;
+    private StatusPedido status;
+    private Dinheiro total;
+
+    public Cliente getCliente() { return cliente; }
+    public Restaurante getRestaurante() { return restaurante; }
+    public List<ItemPedido> getItens() { return itens; }
+    public StatusPedido getStatus() { return status; }
+    public Dinheiro getTotal() { return total; }
+
     public Pedido(Cliente pCliente, Restaurante pRestaurante) {
         super();
         this.cliente = pCliente;
@@ -21,9 +28,8 @@ public class Pedido extends EntidadeBase {
         }
 
         for (ItemPedido item : itens) {
-            if (item.produto.nome.equalsIgnoreCase(pProduto.nome)) {
-                item.quantidade += pQuantidade;
-                calcularTotal();
+            if (item.getProduto().getNome().equalsIgnoreCase(pProduto.getNome())) {
+                System.debug('Produto já existe no pedido.');
                 return;
             }
         }
@@ -36,7 +42,7 @@ public class Pedido extends EntidadeBase {
         Decimal soma = 0;
 
         for (ItemPedido item : itens) {
-            soma += item.calcularSubtotal();
+            soma += item.getSubtotal();
         }
 
         total = new Dinheiro(soma);

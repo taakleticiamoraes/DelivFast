@@ -44,7 +44,7 @@ public class Dinheiro {
         return new Dinheiro(this.valor * pMultiplicador);
     }
     
-    public Boolean equals(Object obj) {
+    public override Boolean equals(Object obj) {
         if (obj == null || !(obj instanceof Dinheiro)) {
             return false;
         }
@@ -58,6 +58,6 @@ public class Dinheiro {
     }
     
     public override String toString() {
-        return 'R$ ' + valor;
+        return 'R$ ' + valor.setScale(2);
     }
 }
