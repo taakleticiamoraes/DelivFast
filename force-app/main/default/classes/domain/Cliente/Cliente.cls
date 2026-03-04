@@ -1,26 +1,26 @@
-public class Cliente extends EntidadeBase {
+public class Cliente extends Pessoa {
 
-    public String nome;
-    public Documento cpf;
     public Endereco endereco;
     public String telefone;
 
     public Cliente(
         String pNome,
-        Documento pCpf,
+        Documento pDocumento,
         Endereco pEndereco,
         String pTelefone
     ) {
-        super(); 
-        this.nome = pNome;
-        this.cpf = pCpf;
+        super(pNome, pDocumento);
         this.endereco = pEndereco;
         this.telefone = pTelefone;
     }
 
+    public override String getTipoPessoa() {
+        return 'Cliente';
+    }
+
     public override String toString() {
         return 'Cliente: ' + nome +
-            ', CPF: ' + cpf +
+            ', Documento: ' + documento +
             ', Endereço: ' + endereco +
             ', Telefone: ' + telefone +
             ', ID: ' + id;
