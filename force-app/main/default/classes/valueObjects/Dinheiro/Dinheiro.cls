@@ -44,7 +44,7 @@ public class Dinheiro {
         return new Dinheiro(this.valor * pMultiplicador);
     }
     
-    public override Boolean equals(Object obj) {
+    public Boolean equals(Object obj) {
         if (obj == null || !(obj instanceof Dinheiro)) {
             return false;
         }

@@ -19,6 +19,6 @@ public class Produto extends EntidadeBase {
     
     public override String toString() {
         return 'Produto: ' + nome +
-            ' - R$' + preco.valor.setScale(2);
+            ' - R$' + preco.toString();
     }
 }

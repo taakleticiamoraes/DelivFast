@@ -28,7 +28,7 @@ public class Cliente extends Pessoa {
 
     public override String toString() {
         return 'Cliente: ' + nome +
-            ', Documento: ' + documento +
+            ', Documento: ' + getDocumento() +
             ', Endereço: ' + endereco +
             ', Telefone: ' + telefone +
             ', ID: ' + id;

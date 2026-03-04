@@ -4,14 +4,18 @@ public class RelatorioPedidoService {
         Map<Produto, Integer> vendas = new Map<Produto, Integer>();
         
         for (Pedido p : pPedidos) {
-            for (ItemPedido item : p.itens) {
-                if (vendas.containsKey(item.produto)) {
+            for (ItemPedido item : p.getItens()) {
+                
+                Produto produto = item.getProduto();
+                Integer quantidade = item.getQuantidade();
+                
+                if (vendas.containsKey(produto)) {
                     vendas.put(
-                        item.produto,
-                    vendas.get(item.produto) + item.quantidade
-                        );
+                        produto,
+                        vendas.get(produto) + quantidade
+                    );
                 } else {
-                    vendas.put(item.produto, item.quantidade);
+                    vendas.put(produto, quantidade);
                 }
             }
         }
@@ -20,7 +24,7 @@ public class RelatorioPedidoService {
     
     public static Map<String, List<Pedido>> pedidosPorCliente(
         List<Pedido> pPedidos,
-    List<String> pCpfs
+        List<String> pCpfs
     ) {
         Map<String, List<Pedido>> resultado = new Map<String, List<Pedido>>();
         
@@ -29,7 +33,7 @@ public class RelatorioPedidoService {
         }
         
         for (Pedido pedido : pPedidos) {
-            String cpf = pedido.cliente.cpf.valor;
+            String cpf = pedido.getCliente().getDocumento().getValor();
             
             if (resultado.containsKey(cpf)) {
                 resultado.get(cpf).add(pedido);

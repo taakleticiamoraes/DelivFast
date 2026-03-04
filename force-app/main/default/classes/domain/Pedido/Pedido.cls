@@ -1,17 +1,20 @@
 public class Pedido extends EntidadeBase {
-
+    
     private Cliente cliente;
     private Restaurante restaurante;
     private List<ItemPedido> itens;
     private StatusPedido status;
     private Dinheiro total;
-
+    
     public Cliente getCliente() { return cliente; }
     public Restaurante getRestaurante() { return restaurante; }
-    public List<ItemPedido> getItens() { return itens; }
     public StatusPedido getStatus() { return status; }
     public Dinheiro getTotal() { return total; }
 
+    public List<ItemPedido> getItens() {
+        return itens.clone();
+    }
+    
     public Pedido(Cliente pCliente, Restaurante pRestaurante) {
         super();
         this.cliente = pCliente;
@@ -22,44 +25,58 @@ public class Pedido extends EntidadeBase {
     }
     
     public void adicionarItem(Produto pProduto, Integer pQuantidade) {
+        
+        if (status != StatusPedido.CARRINHO) {
+            System.debug('ERRO: Não é possível alterar o pedido após confirmação.');
+            return;
+        }
+        
+        if (pProduto == null) {
+            System.debug('ERRO: Produto inválido.');
+            return;
+        }
+        
         if (pQuantidade == null || pQuantidade <= 0) {
             System.debug('ERRO: Quantidade inválida.');
             return;
         }
-
+        
         for (ItemPedido item : itens) {
-            if (item.getProduto().getNome().equalsIgnoreCase(pProduto.getNome())) {
-                System.debug('Produto já existe no pedido.');
+            if (item.getProduto().id == pProduto.id) {
+                System.debug('ERRO: Produto já existe no pedido.');
                 return;
             }
         }
-
-        itens.add(new ItemPedido(pProduto, pQuantidade));
-        calcularTotal();
+        
+        ItemPedido novoItem = new ItemPedido(pProduto, pQuantidade);
+        itens.add(novoItem);
+        
+        recalcularTotal();
     }
-
-    public Dinheiro calcularTotal() {
+    
+    private void recalcularTotal() {
         Decimal soma = 0;
-
+        
         for (ItemPedido item : itens) {
             soma += item.getSubtotal();
         }
-
+        
         total = new Dinheiro(soma);
-        return total;
     }
-
+    
     public void confirmarPedido() {
+        
         if (status != StatusPedido.CARRINHO) {
             System.debug('ERRO: Pedido já confirmado.');
             return;
         }
-
+        
         if (itens.isEmpty()) {
-            System.debug('ERRO: Pedido vazio.');
+            System.debug('ERRO: Pedido não pode ser confirmado vazio.');
             return;
         }
-
+        
         status = StatusPedido.EM_PROCESSAMENTO;
+        System.debug('Pedido confirmado com sucesso.');
     }
 }

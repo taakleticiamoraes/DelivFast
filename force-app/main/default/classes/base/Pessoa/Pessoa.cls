@@ -1,7 +1,11 @@
 public abstract class Pessoa extends EntidadeBase {
     public String nome { get; private set; }
-    public final Documento documento;
-
+    private Documento documento;
+    
+    public Documento getDocumento() {
+        return documento;
+    }
+    
     public Pessoa(String pNome, Documento pDocumento) {
         super();
         
@@ -16,6 +20,6 @@ public abstract class Pessoa extends EntidadeBase {
         this.nome = pNome;
         this.documento = pDocumento;
     }
-
+    
     public abstract String getTipoPessoa();
 }

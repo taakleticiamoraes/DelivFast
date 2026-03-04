@@ -21,7 +21,7 @@ public class Endereco {
         this.cidade = pCidade;
     }
     
-    public override Boolean equals(Object obj) {
+    public Boolean equals(Object obj) {
         if (obj == null || !(obj instanceof Endereco)) {
             return false;
         }
