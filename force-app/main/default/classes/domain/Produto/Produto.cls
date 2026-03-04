@@ -1,24 +1,34 @@
 public class Produto extends EntidadeBase {
-
+    
     private String nome;
-    private Dinheiro preco;
-
+    private Dinheiro precoBase;
+    private PoliticaDePreco politicaDePreco;
+    
     public String getNome() {
         return nome;
     }
-
-    public Dinheiro getPreco() {
-        return preco;
+    
+    public Dinheiro getPrecoBase() {
+        return precoBase;
     }
     
-    public Produto(String pNome, Dinheiro pPreco) {
+    public Produto(String pNome, Dinheiro pPreco, PoliticaDePreco pPolitica) {
         super();
         this.nome = pNome;
-        this.preco = pPreco;
+        this.precoBase = pPreco;
+        this.politicaDePreco = pPolitica;
     }
     
     public override String toString() {
         return 'Produto: ' + nome +
-            ' - R$' + preco.toString();
+            ' - R$' + precoBase.toString();
+    }
+    
+    public Dinheiro calcularPrecoFinal() {
+        return politicaDePreco.calcularPreco(this);
+    }
+    
+    public void alterarPoliticaDePreco(PoliticaDePreco novaPolitica) {
+        this.politicaDePreco = novaPolitica;
     }
 }
