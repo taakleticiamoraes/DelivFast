@@ -35,7 +35,7 @@ public class Dinheiro {
         return new Dinheiro(resultado);
     }
     
-    public Dinheiro multiplicar(Integer pMultiplicador){
+    public Dinheiro multiplicar(Decimal pMultiplicador){
         if (pMultiplicador == null || pMultiplicador < 0) {
             System.debug('ERRO: Multiplicador inválido.');
             return this;
