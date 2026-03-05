@@ -25,6 +25,10 @@ public class Pedido extends EntidadeBase {
         this.total = new Dinheiro(0);
     }
     
+    public Boolean estaVazio() {
+        return itens.isEmpty();
+    }
+    
     public void adicionarProduto(Produto pProduto, Integer pQuantidade) {
         
         if (status != StatusPedido.CARRINHO) {
@@ -52,49 +56,6 @@ public class Pedido extends EntidadeBase {
         recalcularTotal();
     }
     
-    public void removerProduto(Produto pProduto) {
-        
-        if (status != StatusPedido.CARRINHO) {
-            System.debug('ERRO: Pedido não pode ser alterado.');
-            return;
-        }
-        
-        for (Integer i = 0; i < itens.size(); i++) {
-            if (itens[i].getProduto().equals(pProduto)) {
-                itens.remove(i);
-                recalcularTotal();
-                return;
-            }
-        }
-        
-        System.debug('Produto não encontrado no pedido.');
-    }
-    public void alterarQuantidade(Produto pProduto, Integer pNovaQuantidade) {
-        
-        if (status != StatusPedido.CARRINHO) {
-            System.debug('ERRO: Pedido não pode ser alterado.');
-            return;
-        }
-        
-        for (Integer i = 0; i < itens.size(); i++) {
-            ItemPedido item = itens[i];
-            
-            if (item.getProduto().equals(pProduto)) {
-                
-                if (pNovaQuantidade <= 0) {
-                    itens.remove(i);
-                } else {
-                    item.atualizarQuantidade(pNovaQuantidade);
-                }
-                
-                recalcularTotal();
-                return;
-            }
-        }
-        
-        System.debug('Produto não encontrado no pedido.');
-    }
-    
     private void recalcularTotal() {
         
         Dinheiro soma = new Dinheiro(0);
@@ -106,18 +67,7 @@ public class Pedido extends EntidadeBase {
         total = soma;
     }
     
-    public void confirmarPedido() {
-        
-        if (status != StatusPedido.CARRINHO) {
-            System.debug('ERRO: Pedido já confirmado.');
-            return;
-        }
-        
-        if (itens.isEmpty()) {
-            System.debug('ERRO: Pedido vazio.');
-            return;
-        }
-        
-        status = StatusPedido.EM_PROCESSAMENTO;
+    public void alterarStatus(StatusPedido novoStatus) {
+        this.status = novoStatus;
     }
 }
