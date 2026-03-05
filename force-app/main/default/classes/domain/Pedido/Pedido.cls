@@ -3,13 +3,15 @@ public class Pedido extends EntidadeBase {
     private Cliente cliente;
     private Restaurante restaurante;
     private List<ItemPedido> itens;
-    private StatusPedido status;
+    private EstadoPedido estadoAtual;
     private Dinheiro total;
     
     public Cliente getCliente() { return cliente; }
     public Restaurante getRestaurante() { return restaurante; }
-    public StatusPedido getStatus() { return status; }
     public Dinheiro getTotal() { return total; }
+    public String getEstado() {
+        return estadoAtual.nome();
+    }
     
     public List<ItemPedido> getItens() {
         return itens.clone();
@@ -20,7 +22,7 @@ public class Pedido extends EntidadeBase {
         
         this.cliente = pCliente;
         this.restaurante = pRestaurante;
-        this.status = StatusPedido.CARRINHO;
+        this.estadoAtual = new EstadoCarrinho();
         this.itens = new List<ItemPedido>();
         this.total = new Dinheiro(0);
     }
@@ -30,21 +32,32 @@ public class Pedido extends EntidadeBase {
     }
     
     public void adicionarProduto(Produto pProduto, Integer pQuantidade) {
-        
-        if (status != StatusPedido.CARRINHO) {
-            System.debug('ERRO: Pedido não pode ser alterado.');
-            return;
-        }
-        
-        if (pQuantidade == null || pQuantidade <= 0) {
-            System.debug('ERRO: Quantidade inválida.');
-            return;
-        }
-        
+        estadoAtual.adicionarProduto(this, pProduto, pQuantidade);
+    }
+    
+    public void confirmar() {
+        estadoAtual.confirmar(this);
+    }
+    
+    public void cancelar() {
+        estadoAtual.cancelar(this);
+    }
+    
+    public void marcarComoEntregue() {
+        estadoAtual.marcarComoEntregue(this);
+    }
+    
+    public void alterarEstado(EstadoPedido novoEstado) {
+        this.estadoAtual = novoEstado;
+    }
+    
+    public void adicionarItemInterno(Produto pProduto, Integer pQuantidade) {
         for (ItemPedido item : itens) {
             if (item.getProduto().equals(pProduto)) {
+                
                 Integer novaQuantidade = item.getQuantidade() + pQuantidade;
                 item.atualizarQuantidade(novaQuantidade);
+                
                 recalcularTotal();
                 return;
             }
@@ -66,8 +79,25 @@ public class Pedido extends EntidadeBase {
         
         total = soma;
     }
-    
-    public void alterarStatus(StatusPedido novoStatus) {
-        this.status = novoStatus;
+    public void removerItemInterno(Produto produto){
+        
+        for(Integer i = 0; i < itens.size(); i++){
+            
+            if(itens[i].getProduto().equals(produto)){
+                itens.remove(i);
+                recalcularTotal();
+                return;
+            }
+            
+        }
+        
+    }
+    public void aplicarFrete(Dinheiro frete) {
+        
+        if (frete == null) {
+            return;
+        }
+        
+        this.total = this.total.somar(frete);
     }
 }

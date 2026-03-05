@@ -8,70 +8,75 @@ public class PedidoService {
 
     public void confirmarPedido(Pedido pedido) {
 
-        validarConfirmacao(pedido);
+        if (!validarConfirmacao(pedido)) {
+            return;
+        }
 
         aplicarFrete(pedido);
 
-        pedido.alterarStatus(StatusPedido.EM_PROCESSAMENTO);
+        pedido.confirmar();
     }
+
     public void cancelarPedido(Pedido pedido) {
 
-        StatusPedido statusAtual = pedido.getStatus();
+        String statusAtual = pedido.getEstado();
 
-        if (statusAtual == StatusPedido.ENTREGUE) {
+        if (statusAtual == 'ENTREGUE') {
             System.debug('ERRO: Pedido entregue não pode ser cancelado.');
             return;
         }
 
-        if (statusAtual == StatusPedido.CANCELADO) {
+        if (statusAtual == 'CANCELADO') {
             System.debug('ERRO: Pedido já cancelado.');
             return;
         }
 
-        pedido.alterarStatus(StatusPedido.CANCELADO);
+        pedido.cancelar();
     }
 
     public void marcarComoEntregue(Pedido pedido) {
 
-        if (pedido.getStatus() != StatusPedido.EM_PROCESSAMENTO) {
+        if (pedido.getEstado() != 'EM_PROCESSAMENTO') {
             System.debug('ERRO: Apenas pedidos em processamento podem ser entregues.');
             return;
         }
 
-        pedido.alterarStatus(StatusPedido.ENTREGUE);
+        pedido.marcarComoEntregue();
     }
 
-    private void validarConfirmacao(Pedido pedido) {
+    private Boolean validarConfirmacao(Pedido pedido) {
 
         if (pedido == null) {
             System.debug('ERRO: Pedido inválido.');
-            return;
+            return false;
         }
 
-        if (pedido.getStatus() != StatusPedido.CARRINHO) {
+        if (pedido.getEstado() != 'CARRINHO') {
             System.debug('ERRO: Pedido não está no estado correto.');
-            return;
+            return false;
         }
 
         if (pedido.estaVazio()) {
             System.debug('ERRO: Pedido não pode estar vazio.');
-            return;
+            return false;
         }
 
         if (pedido.getTotal().valor <= 0) {
             System.debug('ERRO: Total do pedido inválido.');
-            return;
+            return false;
         }
 
         if (pedido.getRestaurante() == null) {
             System.debug('ERRO: Pedido sem restaurante.');
-            return;
+            return false;
         }
 
         if (pedido.getCliente() == null) {
             System.debug('ERRO: Pedido sem cliente.');
-            return;
+            return false;
         }
+
+        return true;
     }
 
     private void aplicarFrete(Pedido pedido) {
@@ -86,10 +91,8 @@ public class PedidoService {
             return;
         }
 
-        Dinheiro novoTotal = pedido.getTotal().somar(frete);
+        pedido.aplicarFrete(frete);
 
         System.debug('Frete aplicado: ' + frete);
-        System.debug('Novo total: ' + novoTotal);
     }
-
 }
