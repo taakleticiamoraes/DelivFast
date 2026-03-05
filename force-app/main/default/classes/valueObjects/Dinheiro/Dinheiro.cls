@@ -24,7 +24,6 @@ public class Dinheiro {
             System.debug('ERRO: Valor nulo para subtração.');
             return this;
         }
-
         Decimal resultado = this.valor - pOutro.valor;
         
         if (resultado < 0) {
@@ -59,5 +58,9 @@ public class Dinheiro {
     
     public override String toString() {
         return 'R$ ' + valor.setScale(2);
+    }
+    
+    public static Dinheiro zero(){
+        return new Dinheiro(0);
     }
 }
